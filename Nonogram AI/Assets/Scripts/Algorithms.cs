@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Algorithms : MonoBehaviour
 {
-    public GameObject[] CellObj;
-    public List<int> Values;
+    GameObject[] CellObj;
+    List<int> Values;
 
     [HideInInspector]
     public Cell[] Cells;
@@ -62,7 +62,7 @@ public class Algorithms : MonoBehaviour
         for (int i = 0; i < Values.Count; i++)
         {
             Total += Values[i];
-            if( i > 0 )
+            if (i > 0)
             {
                 Total++;
             }
@@ -75,7 +75,7 @@ public class Algorithms : MonoBehaviour
         int cellIndex = 0;
         foreach (int value in Values)
         {
-            for(int i = cellIndex; i < value + cellIndex; i++)
+            for (int i = cellIndex; i < value + cellIndex; i++)
             {
                 Cells[i].ChangeCellState(1);
             }
