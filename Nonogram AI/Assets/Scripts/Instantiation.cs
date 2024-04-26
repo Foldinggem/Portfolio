@@ -12,7 +12,10 @@ public class Instantiation : MonoBehaviour
     private void Start()
     {
         manager = GameManager.Instance;
+    }
 
+    public void Instantiate()
+    {
         Vector3 posModifier = Vector2.zero;
 
         for (int i = 0; i < 5; i++)
@@ -25,12 +28,16 @@ public class Instantiation : MonoBehaviour
                 newObj.transform.position += posModifier;
 
                 Cell newCell = new Cell(newObj);
-                manager.Cells[j,i] = newCell;
+                manager.Cells[j, i] = newCell;
 
                 posModifier.x += 1.2f;
             }
 
             posModifier.y -= 1.2f;
         }
+
+        Value newVal = new Value();
+        newVal.AddValue(4);
+        manager.tempVal = newVal;
     }
 }
