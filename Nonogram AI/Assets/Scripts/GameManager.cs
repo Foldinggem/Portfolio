@@ -42,7 +42,8 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Solving:
-                FindAnyObjectByType<Algorithms>().Process();
+                FindAnyObjectByType<Algorithms>().RuleOfHalfs();
+                state = GameState.SettingValues;
                 break;
         }
     }

@@ -13,67 +13,52 @@ public class Algorithms : MonoBehaviour
     }
 
 
-    public void FillByCount()   
+    public void RuleOfHalfs()   
     {
+        int index = 0;
 
+        // Loop through each value in a set of values and call functions for each
+        foreach(int number in manager.tempVal.values)
+        {
+            GridBound sideValues = new GridBound();
+
+            // Identify and add side values to this value
+            for(int i = 0; i < manager.tempVal.values.Count; i++)
+            {
+                if(i < index)
+                {
+                    sideValues.left += manager.tempVal.values[i] + 1;
+                }
+                else if (i > index)
+                {
+                    sideValues.right += manager.tempVal.values[i] + 1;
+                }
+            }
+
+            // If there are enough values to form determined spots call the solve function to get specific spots
+            if (number + sideValues.left + sideValues.right > manager.tempVal.cells.Length / 2)
+            {
+                FillGrid(number, sideValues);
+            }
+
+            index++;
+        }
     }
 
+    public void FillGrid(int number, GridBound sideValues)
+    {
+        GridBound Barrier = new GridBound(0, manager.tempVal.cells.Length - 1);
 
+        Barrier.Pinch(sideValues);
 
+        int availableSpace = Barrier.right + 1 - Barrier.left;
+        int extra = availableSpace - number;
 
-    //public void Process()
-    //{
-    //    if (manager.tempVal.cells.Length == GetValueTotal())
-    //    {
-    //        FillStates();
-    //    }
-    //    else if (manager.tempVal.values.Count == 0)
-    //    {
-    //        FillAbsentValues();
-    //    }
-    //}
+        Barrier.Pinch(extra);
 
-    //int GetValueTotal()
-    //{
-    //    int Total = 0;
-    //    for (int i = 0; i < manager.tempVal.values.Count; i++)
-    //    {
-    //        Total += manager.tempVal.values[i];
-    //        if (i > 0)
-    //        {
-    //            Total++;
-    //        }
-    //    }
-    //    return Total;
-    //}
-
-    //void FillStates()
-    //{
-    //    int cellIndex = 0;
-    //    foreach (int value in manager.tempVal.values)
-    //    {
-    //        for (int i = cellIndex; i < value + cellIndex; i++)
-    //        {
-    //            manager.tempVal.cells[i].ChangeCellState(1);
-    //        }
-    //        cellIndex += value;
-    //        try
-    //        {
-    //            manager.tempVal.cells[cellIndex].ChangeCellState(2);
-    //            cellIndex++;
-    //        }
-    //        catch (IndexOutOfRangeException)
-    //        {
-
-    //        }
-    //    }
-    //}
-
-    //void FillAbsentValues()
-    //{
-    //    foreach (Cell cell in manager.tempVal.cells)
-    //    {
-    //        cell.ChangeCellState(2);
-    //    }
-    //}
+        for(int i = Barrier.left; i <= Barrier.right; i++)
+        {
+            manager.tempVal.cells[i].ChangeCellState(1);
+        }
+    }
 }
