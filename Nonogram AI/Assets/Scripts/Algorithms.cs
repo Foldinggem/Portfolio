@@ -6,6 +6,7 @@ using UnityEngine;
 public class Algorithms : MonoBehaviour
 {
     GameManager manager;
+    Value value;
 
     private void Start()
     {
@@ -13,30 +14,36 @@ public class Algorithms : MonoBehaviour
     }
 
 
-    public void RuleOfHalfs()   
+    public void StartProcess(Value value)
+    {
+        this.value = value;
+        RuleOfHalfs();
+    }
+
+    void RuleOfHalfs()   
     {
         int index = 0;
 
         // Loop through each value in a set of values and call functions for each
-        foreach(int number in manager.tempVal.values)
+        foreach(int number in value.values)
         {
             GridBound sideValues = new GridBound();
 
             // Identify and add side values to this value
-            for(int i = 0; i < manager.tempVal.values.Count; i++)
+            for(int i = 0; i < value.values.Count; i++)
             {
                 if(i < index)
                 {
-                    sideValues.left += manager.tempVal.values[i] + 1;
+                    sideValues.left += value.values[i] + 1;
                 }
                 else if (i > index)
                 {
-                    sideValues.right += manager.tempVal.values[i] + 1;
+                    sideValues.right += value.values[i] + 1;
                 }
             }
 
             // If there are enough values to form determined spots call the solve function to get specific spots
-            if (number + sideValues.left + sideValues.right > manager.tempVal.cells.Length / 2)
+            if (number + sideValues.left + sideValues.right > manager.Values.Length / 2)
             {
                 FillGrid(number, sideValues);
             }
@@ -45,9 +52,9 @@ public class Algorithms : MonoBehaviour
         }
     }
 
-    public void FillGrid(int number, GridBound sideValues)
+    void FillGrid(int number, GridBound sideValues)
     {
-        GridBound Barrier = new GridBound(0, manager.tempVal.cells.Length - 1);
+        GridBound Barrier = new GridBound(0, manager.Values.Length - 1);
 
         Barrier.Pinch(sideValues);
 
@@ -58,7 +65,16 @@ public class Algorithms : MonoBehaviour
 
         for(int i = Barrier.left; i <= Barrier.right; i++)
         {
-            manager.tempVal.cells[i].ChangeCellState(1);
+            //value.cells[i].ChangeCellState(1);
+            manager.Cells[i,value.myIndex].ChangeCellState(1);
         }
     }
+
+
+
+
+    /* 
+    Notes to developer:
+    - all "manager.Values.Length" are temporary and will later need to be changed
+    */
 }

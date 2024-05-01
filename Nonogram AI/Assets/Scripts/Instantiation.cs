@@ -41,9 +41,9 @@ public class Instantiation : MonoBehaviour
         }
 
         // Manually set case for the algorithm to solve
-        Value newVal = new Value();
-        newVal.AddValue(2);
-        newVal.AddValue(2);
-        manager.tempVal = newVal;
+        //Value newVal = new Value();
+        //newVal.AddValue(2);
+        //newVal.AddValue(2);
+        //manager.tempVal = newVal;
     }
 }

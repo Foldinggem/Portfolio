@@ -10,10 +10,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public Cell[,] Cells = new Cell[5, 5];
     [HideInInspector]
-    public Value[,] Values;
+    public Value[] Values = new Value[5];
 
-    [HideInInspector]
-    public Value tempVal;
+    //[HideInInspector]
+    //public Value tempVal;
 
     private void Awake()
     {
@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Instantiation:
                 FindAnyObjectByType<Instantiation>().Instantiate();
-                //Values = new Value[5, 5];
                 state = GameState.Solving;
                 break;
 
@@ -42,8 +41,14 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Solving:
-                FindAnyObjectByType<Algorithms>().RuleOfHalfs();
-                state = GameState.SettingValues;
+                foreach (var value in Values)
+                {
+                    FindAnyObjectByType<Algorithms>().StartProcess(value);
+                }
+                state = GameState.Idle;
+                break;
+
+            case GameState.Idle:
                 break;
         }
     }
@@ -53,6 +58,7 @@ public class GameManager : MonoBehaviour
     {
         Instantiation,
         SettingValues,
-        Solving
+        Solving,
+        Idle
     }
 }
