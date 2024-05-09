@@ -39,11 +39,5 @@ public class Instantiation : MonoBehaviour
 
             posModifier.y -= 1.2f;
         }
-
-        // Manually set case for the algorithm to solve
-        //Value newVal = new Value();
-        //newVal.AddValue(2);
-        //newVal.AddValue(2);
-        //manager.tempVal = newVal;
     }
 }

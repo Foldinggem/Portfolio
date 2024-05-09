@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public Cell[,] Cells = new Cell[5, 5];
     [HideInInspector]
-    public Value[] Values = new Value[5];
+    public Value[,] Values = new Value[6,6];
 
     //[HideInInspector]
     //public Value tempVal;
@@ -41,9 +41,23 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Solving:
-                foreach (var value in Values)
+                for (int i = 1; i < 6; i++)
                 {
-                    FindAnyObjectByType<Algorithms>().StartProcess(value);
+                    var value = Values[0,i];
+                    try
+                    {
+                        FindAnyObjectByType<Algorithms>().StartProcess(value);
+                    }
+                    catch { }
+                }
+                for (int i = 1; i < 6; i++)
+                {
+                    var value = Values[i, 0];
+                    try
+                    {
+                        FindAnyObjectByType<Algorithms>().StartProcess(value);
+                    }
+                    catch { }
                 }
                 state = GameState.Idle;
                 break;

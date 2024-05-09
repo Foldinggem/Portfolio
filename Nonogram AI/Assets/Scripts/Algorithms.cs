@@ -43,7 +43,7 @@ public class Algorithms : MonoBehaviour
             }
 
             // If there are enough values to form determined spots call the solve function to get specific spots
-            if (number + sideValues.left + sideValues.right > manager.Values.Length / 2)
+            if (number + sideValues.left + sideValues.right > Math.Sqrt(manager.Values.Length) / 2)
             {
                 FillGrid(number, sideValues);
             }
@@ -54,7 +54,8 @@ public class Algorithms : MonoBehaviour
 
     void FillGrid(int number, GridBound sideValues)
     {
-        GridBound Barrier = new GridBound(0, manager.Values.Length - 1);
+        GridBound Barrier = new GridBound(0, (int)Math.Sqrt(manager.Values.Length) - 2);
+        Debug.Log(Barrier.right);
 
         Barrier.Pinch(sideValues);
 
@@ -65,8 +66,15 @@ public class Algorithms : MonoBehaviour
 
         for(int i = Barrier.left; i <= Barrier.right; i++)
         {
-            //value.cells[i].ChangeCellState(1);
-            manager.Cells[i,value.myIndex].ChangeCellState(1);
+            if (value.myIndex.x == 0)
+            {
+                Debug.Log(Barrier.left);
+                manager.Cells[i, (int)value.myIndex.y - 1].ChangeCellState(1);
+            }
+            else if (value.myIndex.y == 0)
+            {
+                manager.Cells[(int)value.myIndex.x - 1, i].ChangeCellState(1);
+            }
         }
     }
 

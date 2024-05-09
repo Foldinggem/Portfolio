@@ -7,18 +7,13 @@ public class Value
 {
     public List<int> values = new List<int>();
     //public GridBound[] cellsIndex = new GridBound[5];
-    public int myIndex;
+    public Vector2 myIndex;
 
     GameManager manager;
 
-    public Value(int index)
+    public Value(Vector2 index)
     {
         manager = GameManager.Instance;
-
-        //for (int i = 0; i < cellsIndex.Length; i++)
-        //{
-        //    cellsIndex[i] = new GridBound(i, index);
-        //}
         myIndex = index;
     }
 

@@ -10,22 +10,31 @@ public class TestCase : MonoBehaviour
     {
         manager = GameManager.Instance;
 
-        CreateValue(0, new List<int> { 5 });
-        CreateValue(1, new List<int> { 1, 1, 1 });
-        CreateValue(2, new List<int> { 1, 2 });
-        CreateValue(3, new List<int> { 3, 1 });
-        CreateValue(4, new List<int> { 4 });
+        CreateRowValue(3, new List<int> { 4 });
+        CreateColValue(3, new List<int> { 4 });
     }
 
-    void CreateValue(int index, List<int> values)
+    void CreateRowValue(int index, List<int> values)
     {
-        Value newValue = new Value(index);
+        Value newValue = new Value(new Vector2(0, index));
 
         foreach (int value in values)
         {
             newValue.AddValue(value);
         }
 
-        manager.Values[index] = newValue;
+        manager.Values[0, index] = newValue;
+    }
+
+    void CreateColValue(int index, List<int> values)
+    {
+        Value newValue = new Value(new Vector2(index, 0));
+
+        foreach (int value in values)
+        {
+            newValue.AddValue(value);
+        }
+
+        manager.Values[index, 0] = newValue;
     }
 }
