@@ -5,12 +5,13 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public int Size;
     GameState state;
 
     [HideInInspector]
-    public Cell[,] Cells = new Cell[5, 5];
+    public Cell[,] Cells;
     [HideInInspector]
-    public Value[,] Values = new Value[6,6];
+    public Value[,] Values;
 
     //[HideInInspector]
     //public Value tempVal;
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            Cells = new Cell[Size, Size];
+            Values = new Value[Size + 1, Size + 1];
         }
     }
 
