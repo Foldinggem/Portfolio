@@ -39,4 +39,16 @@ public class Value
             throw new System.Exception("Values exceed the limit");
         }
     }
+
+    public Cell GetCellIndex(int index)
+    {
+        if (myIndex.x == 0)
+        {
+            return manager.Cells[index, (int)myIndex.y - 1];
+        }
+        else
+        {
+            return manager.Cells[(int)myIndex.x - 1, index];
+        }
+    }
 }

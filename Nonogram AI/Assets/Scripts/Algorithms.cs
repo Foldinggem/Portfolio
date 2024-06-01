@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Algorithms : MonoBehaviour
 {
     GameManager manager;
     Value value;
+    List<GridBound> scan;
 
     private void Start()
     {
@@ -17,13 +20,63 @@ public class Algorithms : MonoBehaviour
     public void StartProcess(Value value)
     {
         this.value = value;
-        RuleOfHalfs();
+        scan = new List<GridBound>();
+        ScanValues();
+
+        Debug.Log(this.value.myIndex);
+        foreach (GridBound scanValue in scan)
+        {
+            Debug.Log($"    Left: {scanValue.left}");
+            foreach (var fillVal in scanValue.fillValues)
+            {
+                Debug.Log("         " + fillVal);
+            }
+            Debug.Log($"    Right: {scanValue.right}");
+        }
+        //RuleOfHalfs();
     }
+
+
+    void ScanValues()
+    {
+        int left = -1; int right = -1;
+        int prevIndex = -1;
+        List<int> filledIndex = new List<int>();
+
+        for (int i = 0; i < Math.Sqrt(manager.Cells.Length); i++)
+        {
+            if (value.GetCellIndex(i).state != Cell.CellState.Crossed)
+            {
+                if (left < 0)
+                {
+                    left = i;
+                }
+                if (value.GetCellIndex(i).state == Cell.CellState.Filled)
+                {
+                    filledIndex.Add(i);
+                }
+            }
+            if (value.GetCellIndex(i).state == Cell.CellState.Crossed && left >= 0)
+            {
+                right = prevIndex;
+                scan.Add(new GridBound(left, right, filledIndex));
+                left = -1; right = -1;
+                filledIndex = new List<int>();
+            }
+            else if(left >= 0 && i == Math.Sqrt(manager.Cells.Length) - 1)
+            {
+                right = i;
+                scan.Add(new GridBound(left, right, filledIndex));
+            }
+
+            prevIndex = i;
+        }
+    }
+
 
     void RuleOfHalfs()   
     {
         int index = 0;
-
         // Loop through each value in a set of values and call functions for each
         foreach(int number in value.values)
         {
@@ -69,11 +122,11 @@ public class Algorithms : MonoBehaviour
             if (value.myIndex.x == 0)
             {
                 Debug.Log(Barrier.left);
-                manager.Cells[i, (int)value.myIndex.y - 1].ChangeCellState(1);
+                manager.Cells[i, (int)value.myIndex.y - 1].ChangeCellState("Filled");
             }
             else if (value.myIndex.y == 0)
             {
-                manager.Cells[(int)value.myIndex.x - 1, i].ChangeCellState(1);
+                manager.Cells[(int)value.myIndex.x - 1, i].ChangeCellState("Filled");
             }
         }
     }

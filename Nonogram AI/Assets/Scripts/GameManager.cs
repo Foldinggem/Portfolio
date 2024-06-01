@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,36 +38,41 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Instantiation:
                 FindAnyObjectByType<Instantiation>().Instantiate();
-                state = GameState.Solving;
+                FindAnyObjectByType<TestCase>().CreateCase();
+                state = GameState.SettingValues;
                 break;
 
             case GameState.SettingValues:
+                CreateBlankValues();
+                state = GameState.Solving;
                 break;
 
             case GameState.Solving:
-                for (int i = 1; i < 6; i++)
+                for (int i = 1; i < Math.Sqrt(Values.Length); i++)
                 {
                     var value = Values[0,i];
-                    try
-                    {
-                        FindAnyObjectByType<Algorithms>().StartProcess(value);
-                    }
-                    catch { }
+                    FindAnyObjectByType<Algorithms>().StartProcess(value);
                 }
-                for (int i = 1; i < 6; i++)
+
+                for (int i = 1; i < Math.Sqrt(Values.Length); i++)
                 {
                     var value = Values[i, 0];
-                    try
-                    {
-                        FindAnyObjectByType<Algorithms>().StartProcess(value);
-                    }
-                    catch { }
+                    FindAnyObjectByType<Algorithms>().StartProcess(value);
                 }
                 state = GameState.Idle;
                 break;
 
             case GameState.Idle:
                 break;
+        }
+    }
+
+    void CreateBlankValues()
+    {
+        for(int i = 1; i < Math.Sqrt(Values.Length); i++)
+        {
+            Values[i, 0] = new Value(new Vector2(i, 0));
+            Values[0, i] = new Value(new Vector2(0, i));
         }
     }
 

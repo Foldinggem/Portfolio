@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cell
 {
-    CellState state;
+    public CellState state;
     GameObject thisCell;
 
     public Cell(GameObject thisCell)
@@ -13,28 +13,29 @@ public class Cell
         this.thisCell = thisCell;
     }
 
-    /*
-        0 = None
-        1 = Filled
-        2 = Crossed
-    */
-    public void ChangeCellState(int stateNum)
+
+    public void ChangeCellState(string stateName)
     {
-        switch(stateNum)
+        switch(stateName)
         {
-            case 0:
+            case "None":
                 thisCell.GetComponent<SpriteRenderer>().color = Color.white;
+                state = CellState.None;
                 break;
-            case 1:
+            case "Filled":
                 thisCell.GetComponent<SpriteRenderer>().color = new Color(0.1f, 0.1f, 0.5f);
+                state = CellState.Filled;
                 break;
-            case 2:
+            case "Crossed":
                 thisCell.GetComponent<SpriteRenderer>().color = Color.red;
+                state = CellState.Crossed;
+                break;
+            case null:
                 break;
         }
     }
 
-    enum CellState
+    public enum CellState
     {
         None,
         Filled,
